@@ -17,12 +17,16 @@ export async function uploadDocument(
   contentType = "application/pdf"
 ): Promise<string> {
   const url = `${ENDPOINT}/${BUCKET}/${key}`;
+
   const res = await r2.fetch(url, {
     method: "PUT",
     headers: { "Content-Type": contentType },
     body: buffer,
   });
-  if (!res.ok) throw new Error(`R2 upload failed: ${res.status} ${await res.text()}`);
+
+  if (!res.ok) {
+    throw new Error(`R2 upload failed: ${res.status} ${await res.text()}`);
+  }
   return key;
 }
 
@@ -33,13 +37,16 @@ export async function getSignedDownloadUrl(
 ): Promise<string> {
   const url = new URL(`${ENDPOINT}/${BUCKET}/${key}`);
   url.searchParams.set("X-Amz-Expires", String(expiresIn));
-  const signed = await r2.sign(new Request(url.toString(), { method: "GET" }), {
-    aws: { signQuery: true },
-  });
+
+  const signed = await r2.sign(
+    new Request(url.toString(), { method: "GET" }), 
+    { aws: { signQuery: true } }
+  );
+  
   return signed.url;
 }
 
-/** Delete a document (e.g. after re-delivery or refund) */
+/** Delete a document (optional) */
 export async function deleteDocument(key: string): Promise<void> {
   const url = `${ENDPOINT}/${BUCKET}/${key}`;
   await r2.fetch(url, { method: "DELETE" });
