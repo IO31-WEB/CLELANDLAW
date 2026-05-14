@@ -42,10 +42,6 @@ const PKGS: Package[] = [
   },
 ];
 
-function GlobalStyles() {
-  return null; // We use Tailwind + minimal custom CSS
-}
-
 function Nav({ view, setView }: { view: string; setView: (v: string) => void }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -105,24 +101,23 @@ export default function HomePage() {
 
   return (
     <>
-      <GlobalStyles />
       <Nav view={view} setView={setView} />
 
       {view === "home" && (
         <main className="pt-20">
           <Hero setView={setView} />
           <Packages setView={setView} setPkg={setSelectedPkg} />
-          {/* Add more sections later if needed */}
         </main>
       )}
 
       {view === "packages" && <Packages setView={setView} setPkg={setSelectedPkg} />}
-      {view === "about" && <div className="pt-20 text-center">About Ryan Cleland, Esq. (Add content here)</div>}
+      {view === "about" && <div className="pt-20 text-center min-h-screen">About Ryan Cleland, Esq. — Content coming soon.</div>}
       {view === "checkout" && <Checkout pkg={selectedPkg} setView={setView} />}
     </>
   );
 }
 
+/* ==================== HERO ==================== */
 function Hero({ setView }: { setView: (v: string) => void }) {
   return (
     <section className="min-h-[90dvh] flex items-center px-6 relative bg-[#0A0A0F]">
@@ -139,7 +134,7 @@ function Hero({ setView }: { setView: (v: string) => void }) {
         </p>
         <button
           onClick={() => setView("packages")}
-          className="bg-[#00C896] text-black font-semibold text-lg px-10 py-4 rounded-2xl hover:bg-[#00E5A8] transition-all"
+          className="bg-[#00C896] text-black font-semibold text-lg px-10 py-4 rounded-2xl hover:bg-[#00E5A8] transition-all active:scale-95"
         >
           View Packages & Pricing →
         </button>
@@ -148,6 +143,7 @@ function Hero({ setView }: { setView: (v: string) => void }) {
   );
 }
 
+/* ==================== PACKAGES ==================== */
 function Packages({ setView, setPkg }: { setView: (v: string) => void; setPkg: (p: Package) => void }) {
   return (
     <section className="py-20 px-6 bg-[#0F0F18]">
@@ -188,7 +184,7 @@ function Packages({ setView, setPkg }: { setView: (v: string) => void; setPkg: (
                   setPkg(pkg);
                   setView("checkout");
                 }}
-                className="w-full py-4 bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl font-semibold transition-all"
+                className="w-full py-4 bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl font-semibold transition-all active:scale-95"
               >
                 Select This Plan
               </button>
@@ -200,13 +196,13 @@ function Packages({ setView, setPkg }: { setView: (v: string) => void; setPkg: (
   );
 }
 
+/* ==================== CHECKOUT ==================== */
 function Checkout({ pkg, setView }: { pkg: Package; setView: (v: string) => void }) {
   const [step, setStep] = useState(1);
 
   const handlePay = () => {
-    // TODO: Integrate real Stripe checkout here later
-    alert(`Redirecting to Stripe for $${pkg.price} payment...`);
-    setStep(5); // For now, go to confirmation
+    alert(`In production this would open Stripe Checkout for $${pkg.price}`);
+    setStep(5);
   };
 
   return (
@@ -215,7 +211,6 @@ function Checkout({ pkg, setView }: { pkg: Package; setView: (v: string) => void
         <div className="glass p-8 rounded-3xl">
           <h2 className="text-3xl font-bold mb-8 text-center">Checkout</h2>
 
-          {/* Package Summary */}
           <div className="bg-white/5 p-6 rounded-2xl mb-8">
             <div className="flex justify-between items-center">
               <div>
@@ -224,7 +219,6 @@ function Checkout({ pkg, setView }: { pkg: Package; setView: (v: string) => void
               </div>
               <div className="text-right">
                 <div className="text-4xl font-bold">${pkg.price}</div>
-                <div className="text-sm text-white/50">one-time</div>
               </div>
             </div>
           </div>
@@ -232,7 +226,7 @@ function Checkout({ pkg, setView }: { pkg: Package; setView: (v: string) => void
           {step < 5 ? (
             <button
               onClick={handlePay}
-              className="w-full bg-[#00C896] text-black py-5 rounded-2xl text-xl font-semibold hover:bg-[#00E5A8] transition-all"
+              className="w-full bg-[#00C896] text-black py-5 rounded-2xl text-xl font-semibold hover:bg-[#00E5A8] transition-all active:scale-95"
             >
               Pay ${pkg.price} with Stripe →
             </button>
@@ -240,10 +234,10 @@ function Checkout({ pkg, setView }: { pkg: Package; setView: (v: string) => void
             <div className="text-center py-12">
               <div className="text-6xl mb-6">✅</div>
               <h3 className="text-3xl font-bold mb-4">Order Confirmed</h3>
-              <p className="text-white/70">Thank you! A confirmation email has been sent.</p>
+              <p className="text-white/70 mb-8">Thank you! A confirmation email has been sent.</p>
               <button
                 onClick={() => setView("home")}
-                className="mt-8 text-[#00C896] underline"
+                className="text-[#00C896] underline text-lg"
               >
                 Return Home
               </button>
