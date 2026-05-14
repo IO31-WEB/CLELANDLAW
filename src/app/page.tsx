@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+type View = "home" | "packages" | "about" | "checkout";
+
 interface Package {
   id: string;
   icon: string;
@@ -20,7 +22,7 @@ const PKGS: Package[] = [
     name: "Last Will & Testament",
     price: 299,
     description: "A legally valid, Florida Bar-compliant will that protects your family.",
-    includes: ["Attorney-drafted Florida will", "Guardian nominations", "Named executor", "30-day revisions", "Secure delivery"],
+    includes: ["Attorney-drafted Florida will", "Guardian nominations", "Named executor", "30-day revisions"],
   },
   {
     id: "trust",
@@ -29,7 +31,7 @@ const PKGS: Package[] = [
     name: "Revocable Living Trust",
     price: 899,
     description: "Skip probate. Comprehensive trust with full attorney review.",
-    includes: ["Revocable Living Trust", "Pour-Over Will", "Strategy call with Ryan", "60-day revisions"],
+    includes: ["Revocable Living Trust", "Pour-Over Will", "Strategy call with Ryan"],
   },
   {
     id: "complete",
@@ -38,11 +40,11 @@ const PKGS: Package[] = [
     name: "Complete Estate Plan",
     price: 1499,
     description: "Everything your family needs in one plan.",
-    includes: ["Living Trust + Will", "Power of Attorney", "Healthcare Documents", "Priority delivery"],
+    includes: ["Living Trust + Will", "Power of Attorney", "Healthcare Documents"],
   },
 ];
 
-function Nav({ view, setView }: { view: string; setView: (v: string) => void }) {
+function Nav({ view, setView }: { view: View; setView: (v: View) => void }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -56,7 +58,7 @@ function Nav({ view, setView }: { view: string; setView: (v: string) => void }) 
         </button>
 
         <div className="hidden md:flex items-center gap-8">
-          {["home", "packages", "about"].map((v) => (
+          {(["home", "packages", "about"] as const).map((v) => (
             <button
               key={v}
               onClick={() => setView(v)}
@@ -65,7 +67,10 @@ function Nav({ view, setView }: { view: string; setView: (v: string) => void }) 
               {v === "home" ? "Home" : v.charAt(0).toUpperCase() + v.slice(1)}
             </button>
           ))}
-          <button onClick={() => setView("packages")} className="bg-[#00C896] hover:bg-[#00E5A8] text-black px-6 py-2.5 rounded-2xl font-semibold transition">
+          <button 
+            onClick={() => setView("packages")} 
+            className="bg-[#00C896] hover:bg-[#00E5A8] text-black px-6 py-2.5 rounded-2xl font-semibold transition"
+          >
             Get Started
           </button>
         </div>
@@ -77,7 +82,7 @@ function Nav({ view, setView }: { view: string; setView: (v: string) => void }) 
 
       {mobileOpen && (
         <div className="md:hidden bg-[#0A0A0F] border-t border-white/10 py-4">
-          {["home", "packages", "about"].map((v) => (
+          {(["home", "packages", "about"] as const).map((v) => (
             <button
               key={v}
               onClick={() => { setView(v); setMobileOpen(false); }}
@@ -93,7 +98,7 @@ function Nav({ view, setView }: { view: string; setView: (v: string) => void }) 
 }
 
 export default function HomePage() {
-  const [view, setView] = useState<"home" | "packages" | "about" | "checkout">("home");
+  const [view, setView] = useState<View>("home");
   const [selectedPkg, setSelectedPkg] = useState<Package>(PKGS[1]);
 
   return (
@@ -114,8 +119,8 @@ export default function HomePage() {
   );
 }
 
-/* ==================== HERO ==================== */
-function Hero({ setView }: { setView: (v: string) => void }) {
+/* HERO */
+function Hero({ setView }: { setView: (v: View) => void }) {
   return (
     <section className="min-h-[90dvh] flex items-center px-6 relative bg-[#0A0A0F]">
       <div className="max-w-4xl mx-auto text-center">
@@ -140,8 +145,8 @@ function Hero({ setView }: { setView: (v: string) => void }) {
   );
 }
 
-/* ==================== PACKAGES ==================== */
-function Packages({ setView, setPkg }: { setView: (v: string) => void; setPkg: (p: Package) => void }) {
+/* PACKAGES */
+function Packages({ setView, setPkg }: { setView: (v: View) => void; setPkg: (p: Package) => void }) {
   return (
     <section className="py-20 px-6 bg-[#0F0F18]">
       <div className="max-w-6xl mx-auto">
@@ -187,8 +192,8 @@ function Packages({ setView, setPkg }: { setView: (v: string) => void; setPkg: (
   );
 }
 
-/* ==================== CHECKOUT ==================== */
-function Checkout({ pkg, setView }: { pkg: Package; setView: (v: string) => void }) {
+/* CHECKOUT */
+function Checkout({ pkg, setView }: { pkg: Package; setView: (v: View) => void }) {
   const [step, setStep] = useState(1);
 
   const handlePay = () => {
