@@ -44,4 +44,13 @@ export default function Hero() {
         </div>
 
         {/* Trust signals */}
-        <div className="flex flex-wrap justify-center gap-6 mt-16 text-sm text-white/60
+        <div className="flex flex-wrap justify-center gap-6 mt-16 text-sm text-white/60">
+          <div>🔒 256-bit Encrypted</div>
+          <div>⚖️ Florida Bar Licensed</div>
+          <div>⏱ 3–5 Day Delivery</div>
+          <div>💳 Flat Fee — No Surprises</div>
+        </div>
+      </div>
+    </section>
+  );
+}
