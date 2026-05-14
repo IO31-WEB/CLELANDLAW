@@ -21,7 +21,8 @@ export async function uploadDocument(
   const res = await r2.fetch(url, {
     method: "PUT",
     headers: { "Content-Type": contentType },
-    body: buffer,
+    body: buffer as any,           // Type assertion to bypass strict fetch typing
+    // Alternative (more explicit): body: new Uint8Array(buffer)
   });
 
   if (!res.ok) {
