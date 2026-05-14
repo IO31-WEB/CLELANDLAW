@@ -42,7 +42,7 @@ const PKGS: Package[] = [
   },
 ];
 
-function Nav({ view, setView }: { view: string; setView: (v: any) => void }) {
+function Nav({ view, setView }: { view: string; setView: (v: string) => void }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -65,10 +65,7 @@ function Nav({ view, setView }: { view: string; setView: (v: any) => void }) {
               {v === "home" ? "Home" : v.charAt(0).toUpperCase() + v.slice(1)}
             </button>
           ))}
-          <button
-            onClick={() => setView("packages")}
-            className="bg-[#00C896] hover:bg-[#00E5A8] text-black px-6 py-2.5 rounded-2xl font-semibold transition"
-          >
+          <button onClick={() => setView("packages")} className="bg-[#00C896] hover:bg-[#00E5A8] text-black px-6 py-2.5 rounded-2xl font-semibold transition">
             Get Started
           </button>
         </div>
@@ -155,10 +152,7 @@ function Packages({ setView, setPkg }: { setView: (v: string) => void; setPkg: (
 
         <div className="grid md:grid-cols-3 gap-8">
           {PKGS.map((pkg, i) => (
-            <div
-              key={pkg.id}
-              className={`glass p-8 rounded-3xl transition-all hover:-translate-y-2 ${i === 1 ? "ring-2 ring-[#00C896] scale-[1.02]" : ""}`}
-            >
+            <div key={pkg.id} className={`glass p-8 rounded-3xl transition-all hover:-translate-y-2 ${i === 1 ? "ring-2 ring-[#00C896] scale-[1.02]" : ""}`}>
               {i === 1 && <div className="bg-[#00C896] text-black text-xs font-bold px-4 py-1 rounded-full inline-block mb-6">MOST POPULAR</div>}
               
               <div className="text-6xl mb-6">{pkg.icon}</div>
@@ -180,10 +174,7 @@ function Packages({ setView, setPkg }: { setView: (v: string) => void; setPkg: (
               </ul>
 
               <button
-                onClick={() => {
-                  setPkg(pkg);
-                  setView("checkout");
-                }}
+                onClick={() => { setPkg(pkg); setView("checkout"); }}
                 className="w-full py-4 bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl font-semibold transition-all active:scale-95"
               >
                 Select This Plan
@@ -235,10 +226,7 @@ function Checkout({ pkg, setView }: { pkg: Package; setView: (v: string) => void
               <div className="text-6xl mb-6">✅</div>
               <h3 className="text-3xl font-bold mb-4">Order Confirmed</h3>
               <p className="text-white/70 mb-8">Thank you! A confirmation email has been sent.</p>
-              <button
-                onClick={() => setView("home")}
-                className="text-[#00C896] underline text-lg"
-              >
+              <button onClick={() => setView("home")} className="text-[#00C896] underline text-lg">
                 Return Home
               </button>
             </div>
