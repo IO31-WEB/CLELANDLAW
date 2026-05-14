@@ -192,50 +192,72 @@ function Packages({ setView, setPkg }: { setView: (v: View) => void; setPkg: (p:
   );
 }
 
-/* CHECKOUT */
+/* ==================== CHECKOUT (Real Stripe) ==================== */
 function Checkout({ pkg, setView }: { pkg: Package; setView: (v: View) => void }) {
-  const [step, setStep] = useState(1);
+  const handleCheckout = async () => {
+    try {
+      const res = await fetch('/api/orders/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          packageId: pkg.id,
+          intake: {
+            firstName: "Test",
+            lastName: "User",
+            email: "test@example.com",
+            phone: "555-123-4567",
+            state: "Florida",
+            familyStatus: "Single, no children",
+            primaryBeneficiary: "Test Beneficiary",
+            personalRepresentative: "Test Representative",
+            consentAcceptedAt: new Date().toISOString(),
+            consentIpAddress: "127.0.0.1",
+          }
+        }),
+      });
 
-  const handlePay = () => {
-    alert(`In production this would open Stripe Checkout for $${pkg.price}`);
-    setStep(5);
+      const data = await res.json();
+      
+      if (data.sessionUrl) {
+        window.location.href = data.sessionUrl;   // Redirect to Stripe Checkout
+      } else {
+        alert("Error creating checkout session");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
     <div className="min-h-screen bg-[#0A0A0F] pt-20 pb-12 px-6">
       <div className="max-w-2xl mx-auto">
         <div className="glass p-8 rounded-3xl">
-          <h2 className="text-3xl font-bold mb-8 text-center">Checkout</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center">Complete Your Purchase</h2>
 
           <div className="bg-white/5 p-6 rounded-2xl mb-8">
             <div className="flex justify-between items-center">
               <div>
                 <div className="text-4xl mb-2">{pkg.icon}</div>
-                <div className="font-semibold">{pkg.name}</div>
+                <div className="font-semibold text-xl">{pkg.name}</div>
               </div>
               <div className="text-right">
-                <div className="text-4xl font-bold">${pkg.price}</div>
+                <div className="text-5xl font-bold text-[#00C896]">${pkg.price}</div>
+                <div className="text-sm text-white/50">one-time payment</div>
               </div>
             </div>
           </div>
 
-          {step < 5 ? (
-            <button
-              onClick={handlePay}
-              className="w-full bg-[#00C896] text-black py-5 rounded-2xl text-xl font-semibold hover:bg-[#00E5A8] transition-all active:scale-95"
-            >
-              Pay ${pkg.price} with Stripe →
-            </button>
-          ) : (
-            <div className="text-center py-12">
-              <div className="text-6xl mb-6">✅</div>
-              <h3 className="text-3xl font-bold mb-4">Order Confirmed</h3>
-              <p className="text-white/70 mb-8">Thank you! A confirmation email has been sent.</p>
-              <button onClick={() => setView("home")} className="text-[#00C896] underline text-lg">
-                Return Home
-              </button>
-            </div>
-          )}
+          <button
+            onClick={handleCheckout}
+            className="w-full bg-[#00C896] hover:bg-[#00E5A8] text-black py-5 rounded-2xl text-xl font-semibold transition-all active:scale-95 flex items-center justify-center gap-2"
+          >
+            Pay ${pkg.price} with Stripe →
+          </button>
+
+          <p className="text-center text-white/50 text-sm mt-6">
+            Secure checkout powered by Stripe • PCI DSS Compliant
+          </p>
         </div>
       </div>
     </div>
