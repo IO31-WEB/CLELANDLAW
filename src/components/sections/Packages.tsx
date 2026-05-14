@@ -50,4 +50,52 @@ export default function Packages() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">Transparent Pricing</h2>
-          <p
+          <p className="text-white/70 text-lg">Every package includes personal review by Ryan Cleland, Esq.</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {packages.map((pkg, index) => (
+            <div
+              key={pkg.id}
+              className={`glass p-8 rounded-3xl transition-all hover:-translate-y-2 ${selected === pkg.id ? "ring-2 ring-[#00C896] scale-[1.02]" : ""}`}
+              onClick={() => setSelected(pkg.id)}
+            >
+              {index === 1 && (
+                <div className="inline-block bg-[#00C896] text-black text-xs font-bold tracking-widest px-5 py-1 rounded-full mb-6">
+                  MOST POPULAR
+                </div>
+              )}
+
+              <div className="text-6xl mb-6">{pkg.icon}</div>
+              <div className="uppercase text-sm tracking-widest text-[#00C896] mb-2">{pkg.tag}</div>
+              <h3 className="text-2xl font-semibold mb-3">{pkg.name}</h3>
+              <p className="text-white/60 mb-8 leading-relaxed">{pkg.description}</p>
+
+              <div className="mb-8">
+                <span className="text-5xl font-bold">${pkg.price}</span>
+                <span className="text-white/40 ml-1">flat fee</span>
+              </div>
+
+              <ul className="space-y-3 mb-10 text-sm">
+                {pkg.includes.map((item, i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="text-[#00C896]">✓</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href="#"
+                onClick={(e) => { e.preventDefault(); window.location.href = "#checkout"; }}
+                className="block w-full text-center py-4 bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl font-semibold transition-all"
+              >
+                Select This Plan →
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
