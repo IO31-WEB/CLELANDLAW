@@ -42,7 +42,7 @@ const PKGS: Package[] = [
   },
 ];
 
-function Nav({ view, setView }: { view: string; setView: (v: string) => void }) {
+function Nav({ view, setView }: { view: string; setView: (v: any) => void }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
