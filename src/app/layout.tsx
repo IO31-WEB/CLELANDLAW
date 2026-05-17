@@ -3,15 +3,20 @@ import { Playfair_Display, Outfit } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
+// Only load weights actually used — cuts font payload ~60%
 const playfair = Playfair_Display({
   subsets: ["latin"],
+  weight: ["400", "600", "700"],   // removed 300, 500, 900 — not used
   variable: "--font-playfair",
   display: "swap",
+  preload: true,
 });
 const outfit = Outfit({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"], // removed 200, 300 — not used
   variable: "--font-outfit",
   display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -45,6 +50,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${playfair.variable} ${outfit.variable}`}>
       <head>
+        {/* Preconnect to critical third-party origins BEFORE they're needed */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
         {/* Schema.org — Attorney */}
         <script
           type="application/ld+json"
