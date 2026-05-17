@@ -19,12 +19,14 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://clerk.clelandlaw.com",
-              "frame-src https://js.stripe.com https://hooks.stripe.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://*.clerk.accounts.dev https://*.clerk.com",
+              "frame-src https://js.stripe.com https://hooks.stripe.com https://*.clerk.accounts.dev",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
-              "img-src 'self' data: https:",
-              "connect-src 'self' https://api.stripe.com https://clerk.clelandlaw.com",
+              "img-src 'self' data: blob: https:",
+              // Clerk sandbox uses *.clerk.accounts.dev, production uses your custom domain
+              "connect-src 'self' https://api.stripe.com https://*.clerk.accounts.dev https://*.clerk.com https://clerk.clelandlaw.com",
+              "worker-src 'self' blob:",
             ].join("; "),
           },
         ],
