@@ -1,54 +1,64 @@
-"use client";
-
-import { useState } from "react";
-
 export default function Hero() {
   return (
     <section className="min-h-[100dvh] flex items-center relative bg-[#0A0A0F] pt-20 overflow-hidden">
-      {/* Background Mesh Effect */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-[-20%] left-[-10%] w-[700px] h-[700px] bg-[#00C896] rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-[#E8754A] rounded-full blur-[120px]" />
+
+      {/* Mesh background — static on mobile via .mesh-orb CSS class, animated on desktop */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div
+          className="mesh-orb mesh-orb-1 absolute w-[500px] h-[500px] md:w-[700px] md:h-[700px] bg-[#00C896] opacity-20"
+          style={{ top: "-15%", left: "-10%" }}
+        />
+        <div
+          className="mesh-orb mesh-orb-2 absolute w-[400px] h-[400px] md:w-[600px] md:h-[600px] bg-[#E8754A] opacity-15"
+          style={{ bottom: "-15%", right: "-8%" }}
+        />
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 relative z-10 text-center">
-        <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-6 py-2 mb-8 text-sm">
+      <div className="max-w-5xl mx-auto px-6 relative z-10 text-center w-full">
+
+        {/* Badge */}
+        <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-5 py-2 mb-8 text-sm">
           <span className="text-[#00C896]">✓</span>
           Florida Bar Licensed Estate Planning Attorney
         </div>
 
-        <h1 className="text-5xl md:text-7xl font-bold leading-[1.05] tracking-tighter mb-8">
+        {/* Headline — LCP element, no animation delay on it */}
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-[1.08] tracking-tight mb-6">
           Your estate plan.<br />
           <span className="text-[#00C896]">Attorney-crafted.</span><br />
-          <span className="text-white/70 text-4xl md:text-5xl">Done entirely online.</span>
+          <span className="text-white/65 text-3xl sm:text-4xl md:text-5xl font-semibold">
+            Done entirely online.
+          </span>
         </h1>
 
-        <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-12">
-          Flat-fee wills and trusts for Florida families. 
+        <p className="text-base sm:text-lg md:text-xl text-white/65 max-w-xl mx-auto mb-10 leading-relaxed">
+          Flat-fee wills and trusts for Florida families.
           Personally reviewed by Ryan Cleland, Esq.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <a 
-            href="#packages" 
-            className="bg-[#00C896] hover:bg-[#00E5A8] text-black font-semibold text-lg px-10 py-4 rounded-2xl transition-all active:scale-95 w-full sm:w-auto"
+        {/* CTAs */}
+        <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-14">
+          <a
+            href="#packages"
+            className="bg-[#00C896] hover:bg-[#00E5A8] active:scale-95 text-black font-semibold text-base px-8 py-4 rounded-2xl transition-colors w-full sm:w-auto text-center"
           >
-            View Packages & Pricing →
+            View Packages &amp; Pricing →
           </a>
-          <a 
-            href="#about" 
-            className="border border-white/30 hover:bg-white/5 font-medium text-lg px-8 py-4 rounded-2xl transition-all w-full sm:w-auto"
+          <a
+            href="#about"
+            className="border border-white/25 hover:border-white/40 font-medium text-base px-7 py-4 rounded-2xl transition-colors w-full sm:w-auto text-center text-white/80"
           >
             Meet Ryan Cleland, Esq.
           </a>
         </div>
 
         {/* Trust signals */}
-        <div className="flex flex-wrap justify-center gap-6 mt-16 text-sm text-white/60">
-          <div>🔒 256-bit Encrypted</div>
-          <div>⚖️ Florida Bar Licensed</div>
-          <div>⏱ 3–5 Day Delivery</div>
-          <div>💳 Flat Fee — No Surprises</div>
+        <div className="flex flex-wrap justify-center gap-3 text-xs sm:text-sm text-white/50">
+          {["🔒 256-bit Encrypted", "⚖️ Florida Bar Licensed", "⏱ 3–5 Day Delivery", "💳 Flat Fee"].map((item) => (
+            <div key={item} className="bg-white/5 border border-white/8 rounded-full px-3 py-1.5">
+              {item}
+            </div>
+          ))}
         </div>
       </div>
     </section>
